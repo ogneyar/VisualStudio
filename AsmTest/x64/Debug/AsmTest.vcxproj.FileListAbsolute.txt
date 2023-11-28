@@ -1,0 +1,1 @@
+E:\VSCode\VisualStudio\AsmTest\x64\Debug\AsmTest.exe
