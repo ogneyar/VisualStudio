@@ -1,3 +1,2 @@
 
 ## Visual Studio projects
-gt
