@@ -7,8 +7,14 @@ testproc proc
 ; RDX - two
 ; Возврат: RAX
 
+	mov ebx, 33
 	mov eax, ecx
 	add eax, edx
+
+	xchg eax, ebx
+
+	cmp eax, 34
+	cmovne eax, ebx
 
 	ret
 
