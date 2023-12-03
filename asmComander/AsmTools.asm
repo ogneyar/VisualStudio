@@ -1,5 +1,5 @@
-
 .code
+
 ;---------------------------------------------------------------------------------------------------------------
 Get_Pos_Address proc
 ; Параметры:
@@ -86,6 +86,21 @@ Draw_End_Symbol proc
 
 Draw_End_Symbol endp
 ;---------------------------------------------------------------------------------------------------------------
+Get_Screen_Width_Size proc
+; Вычисление ширины экрана в юайтах
+; Параметры:
+; RDX - pos
+; Возврат: R11
+
+	mov r11, rdx ; R11 = pos
+	shr r11, 32 ; R11 = pos.Len | pos.Screen_Width
+	movzx r11, r11w ; R11 = pos.Screen_Width
+	shl r11, 2 ; R11 = pos.Screen_Width * 4
+
+	ret
+
+Get_Screen_Width_Size endp
+;---------------------------------------------------------------------------------------------------------------
 Draw_Line_Horizontal proc
 ; extern "C" void Draw_Line_Horizontal(CHAR_INFO* screen_buffer, SPos pos, ASymbol symbol);
 ; Параметры:
@@ -144,11 +159,8 @@ Draw_Line_Vertical proc
 	mov rdi, rax
 
 	; 2. Вычисление коррекции позиции вывода
-	mov r11, rdx ; R11 = pos
-	shr r11, 32 ; R11 = pos.Len | pos.Screen_Width
-	movzx r11, r11w ; R11 = pos.Screen_Width
-	dec r11
-	shl r11, 2 ; R11 = pos.Screen_Width * 4
+	call Get_Screen_Width_Size ; R11 = pos.Screen_Width * 4
+	sub r11, 4 ; шаг назад на один символ
 	
 	; 3. Выводим стартовый символ
 	call Draw_Start_Symbol
@@ -201,10 +213,7 @@ Show_Colors proc
 	mov r10, rdi
 
 	; 2. Вычисление коррекции позиции вывода
-	mov r11, rdx ; R11 = pos
-	shr r11, 32 ; R11 = pos.Len | pos.Screen_Width
-	movzx r11, r11w ; R11 = pos.Screen_Width
-	shl r11, 2 ; R11 = pos.Screen_Width * 4
+	call Get_Screen_Width_Size ; R11 = pos.Screen_Width * 4
 
 	; 3. Выводим символы
 	mov eax, r8d ; EAX = symbol
@@ -236,5 +245,58 @@ _2:
 	ret
 
 Show_Colors endp
+;---------------------------------------------------------------------------------------------------------------
+Clear_Area proc
+; extern "C" void Clear_Area(CHAR_INFO * screen_buffer, SArea_Pos area_pos, ASymbol symbol);
+; Параметры:
+; RCX - screen_buffer
+; RDX - area_pos
+; R8 - symbol
+; Возврат: нет
+
+	push rax
+	push rbx
+	push rcx
+	push rdi
+	push r10
+	push r11
+
+	; 1. Вычисляем адрес вывода
+	call Get_Pos_Address ; RAX = screen_buffer + address_offset
+	mov rdi, rax
+	
+	mov r10, rdi
+
+	; 2. Вычисление коррекции позиции вывода
+	call Get_Screen_Width_Size ; R11 = pos.Screen_Width * 4
+
+	; 3. Выводим символы
+	mov eax, r8d ; EAX = symbol
+
+	mov rbx, rdx
+	shr rbx, 48 ; BH - area_pos.Height, BL - area_pos.Width
+
+	xor rcx, rcx
+_1:
+	mov cl, bl
+
+	rep stosd ; mov [ rdi ], eax
+
+	add r10, r11
+	mov rdi, r10
+
+	dec bh
+	jnz _1
+	
+	pop r11
+	pop r10
+	pop rdi
+	pop rcx
+	pop rbx
+	pop rax
+
+	ret
+
+Clear_Area endp
 ;---------------------------------------------------------------------------------------------------------------
 end

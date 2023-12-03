@@ -22,9 +22,15 @@
     <Filter Include="Panel">
       <UniqueIdentifier>{ddfa6998-039b-4c99-8953-6d1c6cc7a1f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AsmCommander">
+      <UniqueIdentifier>{25f2c9af-9c90-4fad-a737-c7f533a2228f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{a8f20c59-2068-401b-9f8c-bfae9f43e2e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="aCom.asm">
+    <MASM Include="AsmTools.asm">
       <Filter>AsmTools</Filter>
     </MASM>
   </ItemGroup>
@@ -35,6 +41,12 @@
     <ClCompile Include="Panel.cpp">
       <Filter>Panel</Filter>
     </ClCompile>
+    <ClCompile Include="AsmCommander.cpp">
+      <Filter>AsmCommander</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -42,6 +54,15 @@
     </ClInclude>
     <ClInclude Include="Panel.h">
       <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmCommander.h">
+      <Filter>AsmCommander</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmToolsInterface.h">
+      <Filter>AsmTools</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
