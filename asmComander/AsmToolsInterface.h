@@ -7,4 +7,9 @@ extern "C" void Draw_Line_Horizontal(CHAR_INFO * screen_buffer, SPos pos, ASymbo
 extern "C" void Draw_Line_Vertical(CHAR_INFO * screen_buffer, SPos pos, ASymbol symbol);
 extern "C" void Show_Colors(CHAR_INFO * screen_buffer, SPos pos, CHAR_INFO symbol);
 extern "C" void Clear_Area(CHAR_INFO * screen_buffer, SArea_Pos area_pos, ASymbol symbol);
+extern "C" int Draw_Text(CHAR_INFO * screen_buffer, SText_Pos text_pos, const wchar_t *str);
+extern "C" void Draw_Limited_Text(CHAR_INFO * screen_buffer, SText_Pos text_pos, const wchar_t* str, unsigned short limit);
+
+//---------------------------------------------------------------------------------------------------------------
+extern "C" long long test_func(CHAR_INFO * screen_buffer, SPos pos, ASymbol symbol);
 //---------------------------------------------------------------------------------------------------------------

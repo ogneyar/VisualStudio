@@ -87,7 +87,7 @@ Draw_End_Symbol proc
 Draw_End_Symbol endp
 ;---------------------------------------------------------------------------------------------------------------
 Get_Screen_Width_Size proc
-; Вычисление ширины экрана в юайтах
+; Вычисление ширины экрана в байтах
 ; Параметры:
 ; RDX - pos
 ; Возврат: R11
@@ -299,4 +299,118 @@ _1:
 
 Clear_Area endp
 ;---------------------------------------------------------------------------------------------------------------
+Draw_Text proc
+; extern "C" int Draw_Text(CHAR_INFO * screen_buffer, SText_Pos text_pos, const wchar_t *str);
+; Параметры:
+; RCX - screen_buffer
+; RDX - text_pos = { X_Pos, Y_Pos, Screen_Width, Attributes }
+; R8 - str
+; Возврат: RAX - длина строки str
+
+	push rbx
+	push rdi
+	push r8
+
+	; 1. Вычисляем адрес вывода
+	call Get_Pos_Address ; RAX = screen_buffer + address_offset
+	mov rdi, rax
+
+	mov rax, rdx
+	shr rax, 32 ; старшая половина EAX содержит Attributes
+
+	xor rbx, rbx ; счётчик длины строки
+
+_1:
+	mov ax, [ r8 ] ; очередной символ строки
+
+	cmp ax, 0
+	je _exit
+	
+	stosd
+
+	add r8, 2
+	inc rbx
+
+	jmp _1
+
+_exit:
+	mov rax, rbx
+
+	pop r8
+	pop rdi
+	pop rbx
+
+    ret
+
+Draw_Text endp
+;---------------------------------------------------------------------------------------------------------------
+Draw_Limited_Text proc
+; extern "C" void Draw_Limited_Text(CHAR_INFO * screen_buffer, SText_Pos text_pos, const wchar_t* str, unsigned short limit);
+; Параметры:
+; RCX - screen_buffer
+; RDX - text_pos = { X_Pos, Y_Pos, Screen_Width, Attributes }
+; R8 - str
+; R9 - limit
+; Возврат: нет
+
+	push rax
+	push rcx
+	push rdi
+	push r8
+	push r9
+
+	; 1. Вычисляем адрес вывода
+	call Get_Pos_Address ; RAX = screen_buffer + address_offset
+	mov rdi, rax
+
+	mov rax, rdx
+	shr rax, 32 ; старшая половина EAX содержит Attributes
+
+
+_1:
+	mov ax, [ r8 ] ; очередной символ строки
+
+	cmp ax, 0
+	je _fill_spaces
+		
+	stosd
+	add r8, 2
+
+	dec r9
+	cmp r9, 0
+	je _exit ; прекращаем вывод, если строка достигла предела
+
+	jmp _1
+
+_fill_spaces:
+	mov ax, 020h ; сохраняем пробел
+	mov rcx, r9 ; количество оставшихся символов
+
+	rep stosd
+
+_exit:	
+	pop r9
+	pop r8
+	pop rdi
+	pop rcx
+	pop rax
+
+    ret
+
+Draw_Limited_Text endp
+;---------------------------------------------------------------------------------------------------------------
+
+;---------------------------------------------------------------------------------------------------------------
+test_func proc
+; extern "C" long long test_func(CHAR_INFO * screen_buffer, SPos pos, ASymbol symbol);
+; Параметры:
+; RCX - screen_buffer
+; RDX - pos = { X_Pos, Y_Pos, Screen_Width, Len }
+; Возврат: RAX
+
+    ret
+
+test_func endp
+;---------------------------------------------------------------------------------------------------------------
+
 end

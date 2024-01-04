@@ -1,7 +1,2 @@
-﻿  Assembling AsmTools.asm...
-  AsmCommander.cpp
-  Common.cpp
-  Main.cpp
-  Panel.cpp
-  Создание кода...
+﻿  Panel.cpp
   asmComander.vcxproj -> E:\VSCode\VisualStudio\asmComander\x64\Debug\asmComander.exe

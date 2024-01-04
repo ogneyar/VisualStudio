@@ -11,6 +11,16 @@ struct SPos
     unsigned short Len;
 };
 //---------------------------------------------------------------------------------------------------------------
+struct SText_Pos
+{
+    SText_Pos(unsigned short x_pos, unsigned short y_pos, unsigned short screen_width, unsigned short attributes);
+
+    unsigned short X_Pos;
+    unsigned short Y_Pos;
+    unsigned short Screen_Width;
+    unsigned short Attributes;
+};
+//---------------------------------------------------------------------------------------------------------------
 struct SArea_Pos
 {
     SArea_Pos(unsigned short x_pos, unsigned short y_pos, unsigned short screen_width, unsigned char width, unsigned char height);
