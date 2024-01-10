@@ -3,26 +3,115 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:local="clr-namespace:WpfApp1"        
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Информационный стенд" Height="450" Width="800">
+
     <Grid>
-        <TabControl>
+
+        <Menu Height="25" VerticalAlignment="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Новый проект" Click="MenuItem_Click" ></MenuItem>
+                <MenuItem Header="Открыть проект" >
+                    <MenuItem Header="WinForms" Click="MenuItem_Click" ></MenuItem>
+                    <MenuItem Header="WPF" Click="MenuItem_Click" ></MenuItem>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Выход" Click="MenuItem_Click" ></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Редактировать" Click="MenuItem_Click" ></MenuItem>
+            <MenuItem Header="Смотреть" Click="MenuItem_Click" ></MenuItem>
+        </Menu>
+
+        <TabControl x:Name="tabControl" Margin="0,25,0,0" DockPanel.Dock="Right" Background="White">
+
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Height="21" Width="100">
+                        <TextBlock Width="80" Text="{Binding Header}"/>
+                        <Image Source="src\close.png" Width="20" Height="20" MouseDown="Image_MouseDown"/>
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <!--<TabControl.ContentTemplate>
+                <DataTemplate>
+                    <UserControl Height="800" Width="1220" Content="{Binding Content}" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                </DataTemplate>
+            </TabControl.ContentTemplate>-->
+
             <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5">
+                <Grid Background="#FFE5E5E5" HorizontalAlignment="Right" Width="794">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="8*"/>
                         <ColumnDefinition Width="32*"/>
                         <ColumnDefinition Width="357*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Button" HorizontalAlignment="Left" Margin="57,77,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2"/>
-                    <Label Content="Label" HorizontalAlignment="Left" Margin="57,23,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Image 
+                        Source="src\close.png" 
+                        MouseDown="Image_MouseDown" 
+                        Margin="271,263,351,38" 
+                        Grid.Column="2" 
+                        RenderTransformOrigin="0.489,0.508"
+                        Panel.ZIndex="2"
+                    />
+                    <Label 
+                        Content="Label" 
+                        Name="Label"
+                        HorizontalAlignment="Left" 
+                        Margin="57,23,0,0" 
+                        VerticalAlignment="Top" 
+                        Grid.Column="1" 
+                        Grid.ColumnSpan="2"
+                        MouseLeftButtonUp="CommonClickHandler"
+                    />
+                    <Button 
+                        Content="YesButton" 
+                        Name="YesButton"
+                        HorizontalAlignment="Left" 
+                        Margin="57,77,0,0" 
+                        VerticalAlignment="Top" 
+                        Grid.Column="1" 
+                        Grid.ColumnSpan="2"
+                        Click="CommonClickHandler"
+                    />
+                        <!--ClickMode="Hover"-->
                 </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
+            <TabItem 
+                Header="TabItem   X" 
+                ContextMenuClosing="CommonClickHandler"
+                Name="TabItem"
+            >
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
+
         </TabControl>
+
+        <TextBox 
+            x:Name="textBox1" 
+            Width="150" 
+            Height="30" 
+            VerticalAlignment="Top" 
+            Margin="30" 
+        />
+        <Button 
+            x:Name="button1"  
+            Width="100" Height="30" 
+            Content="Нажми меня" 
+            Click="Button_Click" 
+            VerticalAlignment="Top" 
+            Margin="80" 
+        />
+
+        <!--<Image 
+            Source="src\close.png" 
+            MouseDown="Image_MouseDown" 
+            Margin="271,263,351,38" 
+            Grid.Column="2" 
+            RenderTransformOrigin="0.489,0.508"
+            PreviewMouseDown="Image_MouseDown"
+            Panel.ZIndex="2"
+        />-->  
 
     </Grid>
 </Window>
